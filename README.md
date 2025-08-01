@@ -184,7 +184,7 @@ The application implements a simulated secure token-based authentication system:
 ## 📹 Demo Video
 
 ### App Demo on Android
-[![PR Wizard Demo](https://img.youtube.com/vi/YOUR_VIDEO_ID/0.jpg)](https://www.youtube.com/watch?v=YOUR_VIDEO_ID)
+[![PR Wizard Demo](https://drive.google.com/file/d/1ywyeGZpRCaM0LVkF_1pua3IQ5bR63k9n/view?usp=sharing)
 
 *Click the image above to watch the demo video*
 
