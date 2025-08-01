@@ -14,22 +14,26 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   String? token;
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getToken();
+    context.read<HomeBloc>().add(HomeInitialEvent());
   }
 
-  getToken() async {
-    token = await SharedPrefs.getToken();
+  Future<void> getToken() async {
+    final t = await SharedPrefs.getToken();
+    setState(() {
+      token = t;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'PR Reviewer',
           style: TextStyle(
             fontWeight: FontWeight.bold,
@@ -50,66 +54,61 @@ class _HomeState extends State<Home> {
         ],
       ),
       body: BlocConsumer<HomeBloc, HomeState>(
-        listener: (context, state) {
-          // TODO: implement listener
-        },
+        listener: (context, state) {},
         builder: (context, state) {
-          if (state is HomeLoadingState) {
-            return CircularProgressIndicator();
-          } else if (state is HomeLoadedState) {
-            return Column(
-              children: [
-                SizedBox(height: 8),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Container(
-                          padding: EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            color: Colors.green.withOpacity(0.15),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  Text(
-                                    '🔐  Your Token',
-                                    style: TextStyle(
-                                      color: ThemeColors.green,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: 4),
-                              Text(
-                                token.toString(),
-                                style: TextStyle(color: ThemeColors.green),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Column(
-                  children:
-                      state.pullrequests
-                          .map((pr) => PrCard(prData: pr))
-                          .toList(),
-                ),
-              ],
-            );
-          } else {
-            return Container(child: Text('Error State!'));
-          }
+          return RefreshIndicator(
+            onRefresh: () async {
+              await getToken();
+              context.read<HomeBloc>().add(HomeInitialEvent());
+            },
+            child: _buildBody(state),
+          );
         },
       ),
     );
+  }
+
+  Widget _buildBody(HomeState state) {
+    if (state is HomeLoadingState) {
+      return const Center(child: CircularProgressIndicator());
+    } else if (state is HomeLoadedState) {
+      return ListView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        padding: const EdgeInsets.symmetric(vertical: 8),
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.green.withOpacity(0.15),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    '🔐  Your Token',
+                    style: TextStyle(
+                      color: ThemeColors.green,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    token ?? 'No Token Found',
+                    style: const TextStyle(color: ThemeColors.green),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+          ...state.pullrequests.map((pr) => PrCard(prData: pr)).toList(),
+        ],
+      );
+    } else {
+      return const Center(child: Text('Error State!'));
+    }
   }
 }
