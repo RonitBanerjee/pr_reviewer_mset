@@ -1,4 +1,6 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 class EnvironmentConstants {
-  static const String gitBaseUrl = 'https://api.github.com/repos/';
-  static const String token = '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';
+  static String get gitBaseUrl => dotenv.env['GITHUB_BASE_URL'] ?? '';
+  static String get token => dotenv.env['GITHUB_TOKEN'] ?? '';
 }
