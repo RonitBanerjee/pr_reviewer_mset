@@ -16,12 +16,19 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   String? token;
+  late bool isDarkMode;
 
   @override
   void initState() {
     super.initState();
     getToken();
     context.read<HomeBloc>().add(HomeInitialEvent());
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    isDarkMode = Theme.of(context).brightness == Brightness.dark;
   }
 
   Future<void> getToken() async {
@@ -34,25 +41,35 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: isDarkMode ? ThemeColors.black : null,
       appBar: AppBar(
-        title: const Text(
+        backgroundColor: isDarkMode ? Colors.black : Colors.white,
+        elevation: 1,
+        foregroundColor: Colors.black,
+        leading: const Padding(
+          padding: EdgeInsets.only(left: 16.0),
+          child: Icon(Icons.auto_fix_high, color: Colors.blue),
+        ),
+        title: Text(
           'PR Wizard',
-          textAlign: TextAlign.left,
           style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
-            fontSize: 16,
+            fontWeight: FontWeight.w600,
+            color: isDarkMode ? Colors.white : Colors.black,
+            fontSize: 18,
+            letterSpacing: 0.5,
           ),
         ),
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
-        elevation: 0,
+        centerTitle: false,
         actions: [
           IconButton(
-            icon: const Icon(Icons.logout),
+            tooltip: 'Logout',
+            icon: Icon(
+              Icons.logout,
+              color: isDarkMode ? Colors.white : Colors.black,
+            ),
             onPressed: () async {
               await SharedPrefs.clearToken();
-              GoRouter.of(context).pop();
+              GoRouter.of(context).go('/login');
             },
           ),
         ],
@@ -100,6 +117,7 @@ class _HomeState extends State<Home> {
         physics: const AlwaysScrollableScrollPhysics(),
         padding: const EdgeInsets.symmetric(vertical: 8),
         children: [
+          const SizedBox(height: 8),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Container(
@@ -127,7 +145,7 @@ class _HomeState extends State<Home> {
               ),
             ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 8),
           ...state.pullrequests.map((pr) => PrCard(prData: pr)).toList(),
         ],
       );

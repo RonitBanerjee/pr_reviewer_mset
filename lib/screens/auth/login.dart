@@ -13,15 +13,22 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  late bool isDarkMode;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>(); // FIXED
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool _obscurePassword = true;
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    isDarkMode = Theme.of(context).brightness == Brightness.dark;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: isDarkMode ? ThemeColors.black : Colors.white,
       body: Form(
         key: _formKey, // Correct type
         child: SafeArea(
@@ -31,9 +38,13 @@ class _LoginState extends State<Login> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text(
-                  "Welcome back to",
-                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.w500),
+                Text(
+                  "Welcome to",
+                  style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.w500,
+                    color: isDarkMode ? Colors.white : null,
+                  ),
                 ),
                 const SizedBox(height: 4),
                 RichText(

@@ -2,17 +2,33 @@ import 'package:flutter/material.dart';
 import 'package:pr_reviewer/constants/theme_colors.dart';
 import 'package:pr_reviewer/models/pull_request.dart';
 
-class PrCard extends StatelessWidget {
+class PrCard extends StatefulWidget {
   final PullRequest prData;
 
   const PrCard({super.key, required this.prData});
 
   @override
+  State<PrCard> createState() => _PrCardState();
+}
+
+class _PrCardState extends State<PrCard> {
+  late bool isDarkMode;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    isDarkMode = Theme.of(context).brightness == Brightness.dark;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: isDarkMode ? Colors.black : Colors.white,
         borderRadius: BorderRadius.circular(8),
+        border: Border.all(
+          color: isDarkMode ? Colors.grey : Colors.transparent,
+        ),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.2),
@@ -35,7 +51,7 @@ class PrCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(4),
               ),
               child: Text(
-                prData.status.toUpperCase(),
+                widget.prData.status.toUpperCase(),
                 style: TextStyle(color: Colors.white, fontSize: 12),
               ),
             ),
@@ -43,19 +59,22 @@ class PrCard extends StatelessWidget {
             const SizedBox(height: 12),
 
             Text(
-              prData.title,
+              widget.prData.title,
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
             ),
 
             const SizedBox(height: 8),
 
-            if (prData.body != null)
+            if (widget.prData.body != null)
               Text(
-                prData.body,
+                widget.prData.body,
                 style: TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w500,
-                  color: const Color.fromARGB(255, 32, 3, 56),
+                  color:
+                      isDarkMode
+                          ? Colors.white
+                          : const Color.fromARGB(255, 32, 3, 56),
                 ),
               ),
 
@@ -65,13 +84,13 @@ class PrCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  '@${prData.author}',
+                  '@${widget.prData.author}',
                   style: Theme.of(
                     context,
                   ).textTheme.labelMedium?.copyWith(color: Colors.blueGrey),
                 ),
                 Text(
-                  'Opened on ${_formatDate(prData.createdAt)}',
+                  'Opened on ${_formatDate(widget.prData.createdAt)}',
                   style: Theme.of(
                     context,
                   ).textTheme.labelMedium?.copyWith(color: Colors.blueGrey),
