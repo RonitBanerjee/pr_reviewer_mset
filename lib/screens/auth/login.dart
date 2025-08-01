@@ -81,10 +81,6 @@ class _LoginState extends State<Login> {
                   },
                   decoration: InputDecoration(
                     hintText: 'Enter your mail',
-                    prefixIcon: const Icon(
-                      Icons.mail_outline,
-                      color: Colors.blueGrey,
-                    ),
                     border: const UnderlineInputBorder(
                       borderSide: BorderSide(color: Colors.grey),
                     ),
@@ -104,10 +100,6 @@ class _LoginState extends State<Login> {
                   },
                   decoration: InputDecoration(
                     hintText: 'Enter your password',
-                    prefixIcon: const Icon(
-                      Icons.lock_outline,
-                      color: Colors.blueGrey,
-                    ),
                     suffixIcon: IconButton(
                       icon: Icon(
                         _obscurePassword
