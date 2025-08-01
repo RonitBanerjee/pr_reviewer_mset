@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pr_reviewer/constants/theme_colors.dart';
 import 'package:pr_reviewer/helpers/utils/shared_prefs.dart';
+import 'package:pr_reviewer/routing/app_router_config.dart';
 import 'package:pr_reviewer/routing/app_router_constants.dart';
 import 'package:pr_reviewer/screens/home/bloc/home_bloc.dart';
 import 'package:pr_reviewer/widgets/cards/pr_card.dart';
@@ -71,7 +72,8 @@ class _HomeState extends State<Home> {
             onPressed: () async {
               await SharedPrefs.clearToken();
               WidgetsBinding.instance.addPostFrameCallback((_) {
-                GoRouter.of(context).pop();
+                isAuthenticated = false;
+                GoRouter.of(context).goNamed(MyAppRoutes.loginRoute);
               });
             },
           ),

@@ -1,17 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:pr_reviewer/helpers/utils/shared_prefs.dart';
 import 'package:pr_reviewer/routing/app_router_config.dart';
 import 'package:pr_reviewer/screens/auth/login.dart';
 import 'package:pr_reviewer/screens/home/home.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final token = await SharedPrefs.getToken();
+  isAuthenticated = token != null;
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pr_reviewer/constants/theme_colors.dart';
 import 'package:pr_reviewer/helpers/utils/shared_prefs.dart';
+import 'package:pr_reviewer/routing/app_router_config.dart';
 import 'package:pr_reviewer/routing/app_router_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -134,7 +135,8 @@ class _LoginState extends State<Login> {
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
                         await SharedPrefs.saveToken("sample123");
-                        GoRouter.of(context).pushNamed(MyAppRoutes.homeRoute);
+                        isAuthenticated = true;
+                        GoRouter.of(context).goNamed(MyAppRoutes.homeRoute);
                       }
                     },
                     style: ElevatedButton.styleFrom(

@@ -7,6 +7,8 @@ import 'package:pr_reviewer/screens/error_page.dart';
 import 'package:pr_reviewer/screens/home/bloc/home_bloc.dart';
 import 'package:pr_reviewer/screens/home/home.dart';
 
+bool isAuthenticated = false;
+
 class MyAppRouter {
   static final GoRouter router = GoRouter(
     routes: [
@@ -15,6 +17,12 @@ class MyAppRouter {
         path: '/',
         pageBuilder: (context, state) {
           return MaterialPage(child: Login());
+        },
+        redirect: (context, state) {
+          if (isAuthenticated) {
+            return '/home';
+          }
+          return null;
         },
       ),
       GoRoute(
