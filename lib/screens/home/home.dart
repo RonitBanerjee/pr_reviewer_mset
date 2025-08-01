@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pr_reviewer/constants/theme_colors.dart';
 import 'package:pr_reviewer/helpers/utils/shared_prefs.dart';
 import 'package:pr_reviewer/screens/home/bloc/home_bloc.dart';
 import 'package:pr_reviewer/widgets/cards/pr_card.dart';
+import 'package:shimmer/shimmer.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -34,7 +36,8 @@ class _HomeState extends State<Home> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'PR Reviewer',
+          'PR Wizard',
+          textAlign: TextAlign.left,
           style: TextStyle(
             fontWeight: FontWeight.bold,
             color: Colors.black,
@@ -47,8 +50,9 @@ class _HomeState extends State<Home> {
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
-            onPressed: () {
-              Navigator.pushReplacementNamed(context, '/login');
+            onPressed: () async {
+              await SharedPrefs.clearToken();
+              GoRouter.of(context).pop();
             },
           ),
         ],
@@ -70,7 +74,27 @@ class _HomeState extends State<Home> {
 
   Widget _buildBody(HomeState state) {
     if (state is HomeLoadingState) {
-      return const Center(child: CircularProgressIndicator());
+      return ListView.builder(
+        physics: const AlwaysScrollableScrollPhysics(),
+        itemCount: 5,
+        padding: const EdgeInsets.all(16),
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 16.0),
+            child: Shimmer.fromColors(
+              baseColor: Colors.grey.shade300,
+              highlightColor: Colors.grey.shade100,
+              child: Container(
+                height: 100,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+            ),
+          );
+        },
+      );
     } else if (state is HomeLoadedState) {
       return ListView(
         physics: const AlwaysScrollableScrollPhysics(),
