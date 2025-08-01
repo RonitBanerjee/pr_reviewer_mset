@@ -140,22 +140,17 @@ The application implements a simulated secure token-based authentication system:
 - Real-time updates from GitHub API
 - Smooth refresh animation with loading indicators
 
-### 2. **Retry on Failure**
-- Automatic retry mechanism for failed API calls
-- User-friendly error handling with retry options
-- Graceful degradation when network issues occur
-
-### 3. **Responsive Layout**
+### 2. **Responsive Layout**
 - Adaptive design for different screen sizes
 - Optimized layouts for mobile, tablet, and desktop
 - Flexible UI components that scale appropriately
 
-### 4. **Dark Mode**
+### 3. **Dark Mode**
 - Complete dark/light theme support
 - Automatic theme switching based on system preferences
 - Consistent theming across all app components
 
-### 5. **Animations or Shimmer Loading**
+### 4. **Animations or Shimmer Loading**
 - Shimmer loading effects for content loading states
 - Smooth transitions and micro-interactions
 - Professional loading animations for better UX
