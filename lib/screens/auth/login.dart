@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pr_reviewer/constants/theme_colors.dart';
 import 'package:pr_reviewer/routing/app_router_constants.dart';
 
 class Login extends StatefulWidget {
@@ -105,7 +106,7 @@ class _LoginState extends State<Login> {
                     GoRouter.of(context).pushNamed(MyAppRoutes.homeRoute);
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF2F53FF),
+                    backgroundColor: ThemeColors.blue,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(6),
                     ),

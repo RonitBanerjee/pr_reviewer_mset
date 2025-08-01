@@ -17,6 +17,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp.router(
       title: 'PR Wizard',
       debugShowCheckedModeBanner: false,
+      theme: ThemeData(textTheme: GoogleFonts.poppinsTextTheme()),
       routerConfig: MyAppRouter.router,
     );
   }

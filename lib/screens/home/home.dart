@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pr_reviewer/constants/theme_colors.dart';
 import 'package:pr_reviewer/screens/home/bloc/home_bloc.dart';
+import 'package:pr_reviewer/widgets/cards/pr_card.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -16,10 +18,14 @@ class _HomeState extends State<Home> {
       appBar: AppBar(
         title: Text(
           'PR Reviewer',
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+            fontSize: 16,
+          ),
         ),
-        backgroundColor: Colors.blue.shade800,
-        foregroundColor: Colors.white,
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
         elevation: 0,
         actions: [
           IconButton(
@@ -35,10 +41,23 @@ class _HomeState extends State<Home> {
           // TODO: implement listener
         },
         builder: (context, state) {
-          return Column(children: [
-                
+          if (state is HomeLoadingState) {
+            return CircularProgressIndicator();
+          } else if (state is HomeLoadedState) {
+            return Column(
+              children: [
+                SizedBox(height: 8),
+                Column(
+                  children:
+                      state.pullrequests
+                          .map((pr) => PrCard(prData: pr))
+                          .toList(),
+                ),
               ],
             );
+          } else {
+            return Container(child: Text('Error State!'));
+          }
         },
       ),
     );

@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:pr_reviewer/env/environment_constants.dart';
 import 'package:pr_reviewer/helpers/services/github_service.dart';
+import 'package:pr_reviewer/models/pull_request.dart';
 
 part 'home_event.dart';
 part 'home_state.dart';
@@ -17,14 +18,17 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     HomeInitialEvent event,
     Emitter<HomeState> emit,
   ) async {
+    emit(HomeLoadingState());
     print('Here in home inital event');
-    dynamic _pullRequests =
+    List<PullRequest>? pullRequests =
         await GitHubService(
           token: EnvironmentConstants.token,
           owner: 'ronitbanerjee',
-          repo: 'pr_reviewer',
+          repo: 'pr_reviewer_mset',
         ).fetchPullRequests();
 
-    print('Pull Requests: ${_pullRequests}');
+    emit(HomeLoadedState(pullrequests: pullRequests ?? []));
+
+    print('Pull Requests: ${pullRequests}');
   }
 }
