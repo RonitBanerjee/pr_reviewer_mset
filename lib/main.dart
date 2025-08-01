@@ -14,12 +14,10 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    final _myRouter = MyAppRouter();
     return MaterialApp.router(
       title: 'PR Wizard',
       debugShowCheckedModeBanner: false,
-      routeInformationParser: _myRouter.router.routeInformationParser,
-      routerDelegate: _myRouter.router.routerDelegate,
+      routerConfig: MyAppRouter.router,
     );
   }
 }

@@ -4,31 +4,29 @@ import 'package:go_router/go_router.dart';
 import 'package:pr_reviewer/routing/app_router_constants.dart';
 import 'package:pr_reviewer/screens/auth/login.dart';
 import 'package:pr_reviewer/screens/error_page.dart';
+import 'package:pr_reviewer/screens/home/bloc/home_bloc.dart';
 import 'package:pr_reviewer/screens/home/home.dart';
 
-CustomTransitionPage<void> noTransitionPage(Widget child) {
-  return CustomTransitionPage<void>(
-    child: child,
-    transitionsBuilder: (context, animation, secondaryAnimation, child) {
-      return child;
-    },
-  );
-}
-
 class MyAppRouter {
-  static bool isAuthenticated = false;
-  GoRouter router = GoRouter(
-    initialLocation: '/',
+  static final GoRouter router = GoRouter(
     routes: [
       GoRoute(
         name: MyAppRoutes.loginRoute,
         path: '/',
         pageBuilder: (context, state) {
-          if (isAuthenticated) {
-            return noTransitionPage(Home());
-          } else {
-            return noTransitionPage(Login());
-          }
+          return MaterialPage(child: Login());
+        },
+      ),
+      GoRoute(
+        name: MyAppRoutes.homeRoute,
+        path: '/home',
+        pageBuilder: (context, state) {
+          return MaterialPage(
+            child: BlocProvider(
+              create: (context) => HomeBloc()..add(HomeInitialEvent()),
+              child: Home(),
+            ),
+          );
         },
       ),
     ],
